@@ -144,7 +144,7 @@ class RootCache(object):
                 if self.config["tar"] == "bsdtar":
                     __tar_cmd = "bsdtar"
                 else:
-                    __tar_cmd = "gtar"
+                    __tar_cmd = "tar"
                 mockbuild.util.do(
                     [__tar_cmd] + self.decompressArgs + ["-xf", self.rootCacheFile,
                                                          "-C", self.buildroot.make_chroot_path()],
@@ -212,7 +212,7 @@ class RootCache(object):
                                  "-C", self.buildroot.make_chroot_path()] + \
                                 self.exclude_tar_cmds + ["."]
                 else:
-                    __tar_cmd = ["gtar", "--one-file-system", "--exclude-caches", "--exclude-caches-under"] + \
+                    __tar_cmd = ["tar", "--one-file-system", "--exclude-caches", "--exclude-caches-under"] + \
                                  self.compressArgs + \
                                  ["-cf", self.rootCacheFile,
                                   "-C", self.buildroot.make_chroot_path()] + \

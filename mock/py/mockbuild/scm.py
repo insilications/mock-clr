@@ -182,9 +182,9 @@ class scmWorker(object):
             if self.config["tar"] == "bsdtar":
                 __tar_cmd = "bsdtar"
             else:
-                __tar_cmd = "gtar"
+                __tar_cmd = "tar"
             # Always exclude vcs data from tarball unless told not to
-            if str(self.exclude_vcs).lower() == "true" and __tar_cmd == 'gtar':
+            if str(self.exclude_vcs).lower() == "true" and __tar_cmd == 'tar':
                 proc = subprocess.Popen(['tar', '--help'], shell=False, stdout=subprocess.PIPE)
                 proc_result = proc.communicate()[0]
                 proc_result = proc_result.decode()
