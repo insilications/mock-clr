@@ -80,7 +80,7 @@ def setup_default_config_opts(unprivUid, version, pkgpythondir, unprivGid=None):
     config_opts['isolation'] = None
     config_opts['use_nspawn'] = None
     config_opts['rpmbuild_networking'] = False
-    config_opts['nspawn_args'] = ['--capability=cap_ipc_lock']
+    config_opts['nspawn_args'] = ['--capability=cap_ipc_lock', '--console=pipe']
     config_opts['use_container_host_hostname'] = True
 
     config_opts['use_bootstrap'] = True
