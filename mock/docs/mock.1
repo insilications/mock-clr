@@ -57,8 +57,9 @@ contents specified by a configuration file, then build any input SRPM(s) in
 that chroot.
 .LP
 The content of a chroot is specified by the configuration specified with the
-\fB\-r\fR option. The default configuration file is /etc/mock/default.cfg,
-which is usually a symlink to one of the installed configurations.
+\fB\-r\fR option. The default configuration file is
+/usr/share/defaults/mock/default.cfg, which is usually a symlink to one
+of the installed configurations.
 .LP
 There is a site\-wide configuration file, /etc/mock/site\-defaults.cfg, which can
 be used to specify site\-wide options. The shipped version of this file has no
@@ -444,7 +445,9 @@ don't create bootstrap chroot from container image
 
 .SH "FILES"
 .LP
-\fI/etc/mock/\fP \- default configuration directory
+\fI/usr/share/defaults/mock/\fP \- default configuration directory (used when /etc/mock/ is missing)
+.LP
+\fI/etc/mock/\fP \- system configuration directory
 .LP
 \fI/var/lib/mock\fP \- directory where chroots and results are created. You should not put there your input files.
 .SH "EXAMPLES"

@@ -72,6 +72,7 @@ SYSCONFDIR = os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])), "..", 
 PYTHONDIR = os.path.dirname(os.path.realpath(sys.argv[0]))
 PKGPYTHONDIR = os.path.join(os.path.dirname(os.path.realpath(sys.argv[0])), "mockbuild")
 MOCKCONFDIR = os.path.join(SYSCONFDIR, "mock")
+DEFAULTMOCKCONFDIR = "/usr/share/defaults/mock"
 # end build system subs
 
 # import all mockbuild.* modules after this.
@@ -465,10 +466,10 @@ def setup_logging(config_path, config_opts, options):
 
     try:
         if not os.path.exists(log_ini):
-            if os.path.normpath('/etc/mock') != os.path.normpath(config_path):
+            if os.path.normpath(DEFAULTMOCKCONFDIR) != os.path.normpath(config_path):
                 log.warning("Could not find required logging config file: %s. Using default...",
                             log_ini)
-                log_ini = os.path.join("/etc/mock", config_opts["log_config_file"])
+                log_ini = os.path.join(DEFAULTMOCKCONFDIR, config_opts["log_config_file"])
                 if not os.path.exists(log_ini):
                     raise IOError("Could not find log config file %s" % log_ini)
             else:
@@ -676,7 +677,9 @@ def main():
         options.verbose = 0
 
     # config path -- can be overridden on cmdline
-    config_path = MOCKCONFDIR
+    config_path = DEFAULTMOCKCONFDIR
+    if os.path.exists(MOCKCONFDIR):
+        config_path = MOCKCONFDIR
     if options.configdir:
         config_path = options.configdir
 
