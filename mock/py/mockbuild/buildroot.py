@@ -431,7 +431,7 @@ class Buildroot(object):
 
         if self.chrootgid:
             self.doChroot(['/usr/sbin/groupadd', '-g', self.chrootgid, self.chrootgroup],
-                          shell=False, nosync=True)
+                          shell=False, raiseExc=False, nosync=True)
         self.doChroot(shlex.split(self.config['useradd']), shell=False, nosync=True)
         if not self.config['clean']:
             self.uid_manager.changeOwner(self.make_chroot_path(self.homedir))
