@@ -21,7 +21,13 @@ def rebuild_generic(items, commands, buildroot, config_opts, cmd, post=None, cle
             log.info("Start(%s)  Config(%s)", item, buildroot.shared_root_name)
             if clean:
                 commands.clean()
-            commands.init(prebuild=not config_opts.get('short_circuit'))
+            prebuild_flag = False
+            if config_opts.get('short_circuit') == 'prep':
+                prebuild_flag = True
+            else:
+                prebuild_flag = False
+            commands.init(prebuild=prebuild_flag)
+            #commands.init(prebuild=not config_opts.get('short_circuit'))
             ret = cmd(item)
             elapsed = time.time() - start
             log.info("Done(%s) Config(%s) %d minutes %d seconds",
