@@ -48,7 +48,7 @@ def nspawn_supported():
 
 
 @traceLog()
-def setup_default_config_opts(unprivUid, version, pkgpythondir):
+def setup_default_config_opts(unprivUid, version, pkgpythondir, unprivGid=None):
     "sets up default configuration."
     config_opts = TemplatedDictionary(alias_spec={'dnf.conf': ['yum.conf']})
     config_opts['config_paths'] = []
@@ -64,11 +64,14 @@ def setup_default_config_opts(unprivUid, version, pkgpythondir):
     config_opts['log_config_file'] = 'logging.ini'
     config_opts['rpmbuild_timeout'] = 0
     config_opts['chrootuid'] = unprivUid
-    try:
-        config_opts['chrootgid'] = grp.getgrnam("mock")[2]
-    except KeyError:
-        #  'mock' group doesn't exist, must set in config file
-        pass
+    if unprivGid:
+        config_opts['chrootgid'] = unprivGid
+    else:
+        try:
+            config_opts['chrootgid'] = grp.getgrnam("mock")[2]
+        except KeyError:
+            #  'mock' group doesn't exist, must set in config file
+            pass
     config_opts['chrootgroup'] = 'mock'
     config_opts['chrootuser'] = 'mockbuild'
     config_opts['build_log_fmt_name'] = "unadorned"
@@ -722,10 +725,13 @@ def do_update_config(log, config_opts, cfg, uidManager, name, skipError=True):
 @traceLog()
 def load_defaults(uidManager, version, pkg_python_dir):
     if uidManager:
-        gid = uidManager.unprivUid
+        uid = uidManager.unprivUid
+        gid = uidManager.unprivGid
     else:
         gid = os.getuid()
-    return setup_default_config_opts(gid, version, pkg_python_dir)
+        uid = os.getuid()
+        gid = os.getgid()
+    return setup_default_config_opts(uid, version, pkg_python_dir, unprivGid=gid)
 
 
 @traceLog()
