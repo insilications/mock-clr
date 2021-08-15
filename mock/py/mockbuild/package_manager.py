@@ -303,7 +303,7 @@ Error:      Neither dnf-utils nor yum-utils are installed. Dnf-utils or yum-util
 
     @traceLog()
     def copy_certs(self):
-        cert_path = "/etc/pki/ca-trust"
+        cert_path = "/var/cache/ca-certs"
         pki_dir = self.buildroot.make_chroot_path(cert_path)
         try:
             copy_tree(cert_path, pki_dir)
@@ -314,7 +314,7 @@ Error:      Neither dnf-utils nor yum-utils are installed. Dnf-utils or yum-util
         bundle_path = self.config['ssl_ca_bundle_path']
         if bundle_path:
             self.buildroot.root_log.debug('copying CA bundle into chroot')
-            host_bundle = os.path.realpath('/etc/pki/tls/certs/ca-bundle.crt')
+            host_bundle = os.path.realpath('/var/cache/ca-certs/compat/ca-roots.pem')
             chroot_bundle_path = self.buildroot.make_chroot_path(bundle_path)
             chroot_bundle_dir = os.path.dirname(chroot_bundle_path)
             try:
