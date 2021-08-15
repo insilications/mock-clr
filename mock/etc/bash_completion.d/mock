@@ -2,7 +2,7 @@
 
 _mock_root()
 {
-    test $# -eq 0 && set -- /etc/mock "$HOME/.config/mock"
+    test $# -eq 0 && set -- /etc/mock "$HOME/.config/mock" /usr/share/defaults/mock
 
     local suggest=$(
       shopt -s nullglob
@@ -28,7 +28,7 @@ _mock()
     local cur prev words cword split
     _init_completion -s || return
 
-    local cfgdirs=( /etc/mock "$HOME/.config/mock" )
+    local cfgdirs=( /etc/mock "$HOME/.config/mock" /usr/share/defaults/mock )
     local count=0
     for word in "${words[@]}" ; do
         [[ $count -eq $cword ]] && break
