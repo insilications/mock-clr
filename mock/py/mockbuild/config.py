@@ -73,8 +73,10 @@ def setup_default_config_opts(unprivUid, unprivGid=None):
         except KeyError:
             #  'mock' group doesn't exist, must set in config file
             pass
-    config_opts['chrootgroup'] = 'mock'
-    config_opts['chrootuser'] = 'mockbuild'
+    config_opts['chrootuser'] = 'boni'
+    config_opts['chrootgroup'] = 'wheel'
+    config_opts['chrootuid'] = 1000
+    config_opts['chrootgid'] = 10
     config_opts['build_log_fmt_name'] = "unadorned"
     config_opts['root_log_fmt_name'] = "detailed"
     config_opts['state_log_fmt_name'] = "state"
