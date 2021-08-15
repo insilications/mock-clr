@@ -182,7 +182,7 @@ class Buildroot(object):
             if self.config["tar"] == "bsdtar":
                 __tar_cmd = "bsdtar"
             else:
-                __tar_cmd = "gtar"
+                __tar_cmd = "tar"
             podman.install_pkgmgmt_packages()
             podman.cp(self.make_chroot_path(), __tar_cmd)
             podman.remove()
