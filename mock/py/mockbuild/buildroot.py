@@ -268,7 +268,10 @@ class Buildroot(object):
         self.nuke_rpm_db()
         env = dict(self.env)
         if nosync and self.nosync_path:
-            env['LD_PRELOAD'] = self.nosync_path
+            env['LD_PRELOAD'] = f"{self.nosync_path} /usr/lib64/libmimalloc.so"
+            env['PYTHONMALLOC'] = "malloc"
+            env['MIMALLOC_PAGE_RESET'] = "0"
+            env['MIMALLOC_LARGE_OS_PAGES'] = "1"
         if util.USE_NSPAWN:
             if 'uid' not in kargs:
                 kargs['uid'] = uid.getresuid()[1]
