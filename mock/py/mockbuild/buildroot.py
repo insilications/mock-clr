@@ -419,20 +419,23 @@ class Buildroot(object):
         file_util.rmtree(self.make_chroot_path(self.homedir),
                     selinux=self.selinux, exclude=excluded)
 
-        # ok for these two to fail
-        if self.config['clean']:
-            self.doChroot(['/usr/sbin/userdel', '-r', '-f', self.chrootuser],
+        if self.chrootuid != 0:
+            # ok for these two to fail
+            if self.config['clean']:
+                self.doChroot(['/usr/sbin/userdel', '-r', '-f', self.chrootuser],
+                              shell=False, raiseExc=False, nosync=True)
+            else:
+                self.doChroot(['/usr/sbin/userdel', '-f', self.chrootuser],
+                              shell=False, raiseExc=False, nosync=True)
+        if self.chrootgid != 0:
+            self.doChroot(['/usr/sbin/groupdel', self.chrootgroup],
                           shell=False, raiseExc=False, nosync=True)
-        else:
-            self.doChroot(['/usr/sbin/userdel', '-f', self.chrootuser],
-                          shell=False, raiseExc=False, nosync=True)
-        self.doChroot(['/usr/sbin/groupdel', self.chrootgroup],
-                      shell=False, raiseExc=False, nosync=True)
 
-        if self.chrootgid:
+        if self.chrootgid != 0:
             self.doChroot(['/usr/sbin/groupadd', '-g', self.chrootgid, self.chrootgroup],
                           shell=False, raiseExc=False, nosync=True)
-        self.doChroot(shlex.split(self.config['useradd']), shell=False, nosync=True)
+        if self.chrootuid != 0:
+            self.doChroot(shlex.split(self.config['useradd']), shell=False, nosync=True)
         if not self.config['clean']:
             self.uid_manager.changeOwner(self.make_chroot_path(self.homedir))
         self._enable_chrootuser_account()
