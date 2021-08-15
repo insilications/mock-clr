@@ -192,7 +192,10 @@ class _PackageManager(object):
         env['HOME'] = self.buildroot.prepare_installation_time_homedir()
         env['LC_MESSAGES'] = 'C.UTF-8'
         if self.buildroot.nosync_path:
-            env['LD_PRELOAD'] = self.buildroot.nosync_path
+            env['LD_PRELOAD'] = f"{self.buildroot.nosync_path} /usr/lib64/libmimalloc.so"
+            env['PYTHONMALLOC'] = "malloc"
+            env['MIMALLOC_PAGE_RESET'] = "0"
+            env['MIMALLOC_LARGE_OS_PAGES'] = "1"
         invocation = self.build_invocation(*args)
         self.buildroot.root_log.debug(invocation)
         kwargs['printOutput'] = kwargs.get('printOutput', True)
