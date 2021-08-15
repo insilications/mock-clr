@@ -2,7 +2,7 @@
 auth		sufficient	pam_rootok.so
 auth		sufficient	pam_succeed_if.so user ingroup mock use_uid quiet
 # Uncomment the following line to implicitly trust users in the "wheel" group.
-#auth		sufficient	pam_wheel.so trust use_uid
+auth		sufficient	pam_wheel.so trust use_uid
 # Uncomment the following line to require a user to be in the "wheel" group.
 #auth		required	pam_wheel.so use_uid
 auth		include		system-auth
