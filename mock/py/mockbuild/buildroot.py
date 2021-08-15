@@ -439,6 +439,7 @@ class Buildroot(object):
         if not self.config['clean']:
             self.uid_manager.changeOwner(self.make_chroot_path(self.homedir))
         self._enable_chrootuser_account()
+        self._enable_sudoers()
 
     @traceLog()
     def _enable_chrootuser_account(self):
@@ -457,6 +458,15 @@ class Buildroot(object):
             with open(passwd, "w") as f:
                 for l in newlines:
                     f.write(l + '\n')
+
+    @traceLog()
+    def _enable_sudoers(self):
+        sudoers_d = self.make_chroot_path('/etc/sudoers.d')
+        file_util.mkdirIfAbsent(sudoers_d)
+        sudoers = self.make_chroot_path('/etc/sudoers.d/sudoers')
+        with open(sudoers, "w") as f:
+            f.write('Defaults passwd_timeout=0' + '\n')
+            f.write('%wheel ALL=(ALL) NOPASSWD: ALL' + '\n')
 
     @traceLog()
     def _resetLogging(self, force=False):
