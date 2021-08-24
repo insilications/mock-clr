@@ -268,6 +268,14 @@ class Buildroot(object):
         self.nuke_rpm_db()
         env = dict(self.env)
         if nosync and self.nosync_path:
+            if os.path.exists("/usr/lib64/libmimalloc.so"):
+                getLog().info("/usr/lib64/libmimalloc.so exists")
+            else:
+                getLog().info("/usr/lib64/libmimalloc.so does not exists")
+            if os.path.exists(f"{self.nosync_path}"):
+                getLog().info(f"{self.nosync_path} exists")
+            else:
+                getLog().info(f"{self.nosync_path} does not exists")
             env['LD_PRELOAD'] = f"{self.nosync_path} /usr/lib64/libmimalloc.so"
             env['PYTHONMALLOC'] = "malloc"
             env['MIMALLOC_PAGE_RESET'] = "0"
@@ -781,14 +789,14 @@ class Buildroot(object):
         else:
             self.tmpdir = tempfile.mkdtemp(prefix="tmp.mock.", dir='/var/tmp')
         os.chmod(self.tmpdir, 0o777)
-        tmp_libdir = os.path.join(self.tmpdir, '$LIB')
+        tmp_libdir = os.path.join(self.tmpdir, 'lib64')
         mock_libdir = self.make_chroot_path(tmp_libdir)
-        nosync_unresolved = '/usr/$LIB/nosync/nosync.so'
+        nosync_unresolved = '/usr/lib64/nosync/nosync.so'
 
         def copy_nosync(lib64=False):
             def resolve(path):
-                return path.replace('$LIB', 'lib64' if lib64 else 'lib')
-            nosync = resolve(nosync_unresolved)
+                return path
+            nosync = nosync_unresolved
             if not os.path.exists(nosync):
                 return False
             for dst_unresolved in (tmp_libdir, mock_libdir):
