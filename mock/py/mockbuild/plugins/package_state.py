@@ -71,7 +71,7 @@ class PackageState(object):
         self.state.start("Outputting list of installed packages")
 
         try:
-            cmd = "rpm -qa --root '%s' --qf '%%{nevra} %%{buildtime} %%{size} %%{pkgid} installed\\n'" % (
+            cmd = "rpm -qa --root '%s' --qf '%%{nevra} %%{buildtime} %%{size} %%{pkgid} installed\\n' | sort -f" % (
                 self.buildroot.make_chroot_path())
             with self.buildroot.uid_manager:
                 output, _ = self.buildroot.doOutChroot(cmd, returnOutput=1, shell=True)
