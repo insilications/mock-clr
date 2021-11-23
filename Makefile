@@ -16,23 +16,22 @@ install:
 	for i in docs/mock.1 docs/mock-parse-buildlog.1; do \
 		sed -i 's|@VERSION@|'$(VERSION)'|' $$i; \
 	done; \
-	install -d $(DESTDIR)/usr/bin/; \
-	install -d $(DESTDIR)/usr/libexec/mock/; \
+	install -d $(DESTDIR)/usr/bin; \
+	install -d $(DESTDIR)/usr/libexec/mock; \
 	install mockchain $(DESTDIR)/usr/bin/mockchain; \
 	install py/mock-parse-buildlog.py $(DESTDIR)/usr/bin/mock-parse-buildlog; \
 	install py/mock.py $(DESTDIR)/usr/bin/mock; \
 	install create_default_route_in_container.sh $(DESTDIR)/usr/libexec/mock/; \
 	install -d $(DESTDIR)/usr/share/pam.d; \
 	cp -a etc/pam/* $(DESTDIR)/usr/share/pam.d/; \
-	install -d $(DESTDIR)/usr/share/defaults/mock/; \
+	install -d $(DESTDIR)/usr/share/defaults/mock; \
 	cp -a etc/mock/* $(DESTDIR)/usr/share/defaults/mock/; \
-	install -p -m 0644 docs/site-defaults.cfg $(DESTDIR)/usr/share/defaults/mock/; \
+	cp -a docs/site-defaults.cfg $(DESTDIR)/usr/share/defaults/mock/; \
 	install -d $(DESTDIR)/usr/share/bash-completion/completions/; \
 	cp -a etc/bash_completion.d/* $(DESTDIR)/usr/share/bash-completion/completions/; \
 	install -d $(DESTDIR)/$$pysite; \
 	cp -a py/mockbuild $(DESTDIR)/$$pysite/; \
 	install -d $(DESTDIR)/usr/share/man/man1; \
-	cp -a docs/mock.1 docs/mock-parse-buildlog.1 $(DESTDIR)/usr/share/man/man1/; \
 	install -d $(DESTDIR)/usr/share/defaults/sudo/sudoers.d/; \
 	install -m 440 ../mock.sudoers $(DESTDIR)/usr/share/defaults/sudo/sudoers.d/mock; \
-	ln -sf clear.cfg $(DESTDIR)/usr/share/defaults/mock/default.cfg;
+	cp -a docs/mock.1 docs/mock-parse-buildlog.1 $(DESTDIR)/usr/share/man/man1/;
