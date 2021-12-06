@@ -473,11 +473,16 @@ class Buildroot(object):
     @traceLog()
     def _enable_sudoers(self):
         sudoers_d = self.make_chroot_path('/etc/sudoers.d')
-        file_util.mkdirIfAbsent(sudoers_d)
-        sudoers = self.make_chroot_path('/etc/sudoers.d/sudoers')
-        with open(sudoers, "w") as f:
-            f.write('Defaults passwd_timeout=0' + '\n')
-            f.write('%wheel ALL=(ALL) NOPASSWD: ALL' + '\n')
+        sudoers_f = self.make_chroot_path('/etc/sudoers.d/sudoers')
+        if not os.path.exists(sudoers_d):
+            file_util.mkdirIfAbsent(sudoers_d)
+            with open(sudoers_f, "w") as f:
+                f.write('Defaults passwd_timeout=0' + '\n')
+                f.write('%wheel ALL=(ALL) NOPASSWD: ALL' + '\n')
+        if os.path.exists(sudoers_f):
+            getLog().info("created /etc/sudoers.d/sudoers")
+        else:
+            getLog().info("failed to create /etc/sudoers.d/sudoers")
 
     @traceLog()
     def _resetLogging(self, force=False):
