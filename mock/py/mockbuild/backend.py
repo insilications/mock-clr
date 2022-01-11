@@ -324,8 +324,6 @@ class Commands(object):
                 dropped_privs = True
             if results:
                 self.build_results.extend(self.copy_build_results(results))
-            elif self.config.get('short_circuit'):
-                self.buildroot.root_log.info("Short circuit builds don't produce RPMs")
             else:
                 raise PkgError('No build results found')
             self.state.result = 'success'
